@@ -57,6 +57,15 @@ class PyramidJump:
         print (f"  {self.state[6]} {self.state[7]} {self.state[8]} {self.state[9]}")
         print (f" {self.state[10]} {self.state[11]} {self.state[12]} {self.state[13]} {self.state[14]}")
 
+    def get_possible_actions(self):
+        valid_actions = []
+
+        for a_str, move in self.action_dict.items():
+            if self.is_action_valid(move):
+                valid_actions.append(a_str)
+        return valid_actions
+
+
 # Check that the action is valid
     def is_action_valid(self, action):
         if self.state[action["from"]] == "1" and self.state[action["skip"]] == "1" and self.state[action["to"]] == "0": # add check skip and to
@@ -106,7 +115,11 @@ if __name__ == "__main__":
 
     while not done:
 
-        action = input("Where would you like to go?")
+        pos_actions = game.get_possible_actions()
+
+        print(f"Here are the possible moves: \n{[(i, a) for i, a in enumerate(pos_actions)]}")
+        action_idx = input("Where would you like to go?")
+        action = pos_actions[int(action_idx)]
 
         reward, state, done = game.step(action)
 
